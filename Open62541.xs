@@ -47,7 +47,7 @@ typedef enum UA_NodeIdType	OPCUA_Open62541_NodeIdType;
 
 /* types_generated.h */
 typedef UA_Variant *		OPCUA_Open62541_Variant;
-typedef UA_VariableAttributes *	OPCUA_Open62541_VariableAttributes;
+typedef UA_VariableAttributes	OPCUA_Open62541_VariableAttributes;
 
 union type_storage {
 	UA_Boolean			ts_Boolean;
@@ -669,32 +669,6 @@ UA_Variant_setScalar(v, p, type)
 		croak("%s: UA_Variant_setScalarCopy: status code %u",
 		    __func__, sc);
 	}
-
-#############################################################################
-MODULE = OPCUA::Open62541	PACKAGE = OPCUA::Open62541::VariableAttributes	PREFIX = UA_VariableAttributes_
-
-OPCUA_Open62541_VariableAttributes
-UA_VariableAttributes_default(class)
-	char *				class
-    INIT:
-	if (strcmp(class, "OPCUA::Open62541::VariableAttributes") != 0)
-		croak("class '%s' is not OPCUA::Open62541::VariableAttributes",
-		    class);
-    CODE:
-	RETVAL = malloc(sizeof(*RETVAL));
-	if (RETVAL == NULL)
-		croak("malloc");
-	DPRINTF("attr %p", RETVAL);
-	*RETVAL = UA_VariableAttributes_default;
-    OUTPUT:
-	RETVAL
-
-void
-UA_VariableAttributes_DESTROY(attr)
-	OPCUA_Open62541_VariableAttributes	attr
-    CODE:
-	DPRINTF("attr %p", attr);
-	free(attr);
 
 #############################################################################
 MODULE = OPCUA::Open62541	PACKAGE = OPCUA::Open62541::Server		PREFIX = UA_Server_
