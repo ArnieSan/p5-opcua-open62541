@@ -167,7 +167,7 @@ T_UA_VARIABLEATTRIBUTES
 		}
 		value = hv_fetch(hv, \"VariableAttributes_value\", 24, 0);
 		if (value != NULL) {
-			if (!SvROK(*value) || sv_derived_from(*value,
+			if (!SvROK(*value) || sv_derived_from(SvRV(*value),
 			    \"OPCUA::Open62541::Variant\"))
 				croak(\"VariableAttributes_value is not \"
 				    \"a OPCUA::Open62541::Variant\");
