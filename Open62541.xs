@@ -44,6 +44,8 @@ typedef UA_StatusCode		OPCUA_Open62541_StatusCode;
 typedef UA_String		OPCUA_Open62541_String;
 typedef const UA_DataType *	OPCUA_Open62541_DataType;
 typedef enum UA_NodeIdType	OPCUA_Open62541_NodeIdType;
+typedef UA_NodeId		OPCUA_Open62541_NodeId;
+typedef UA_QualifiedName	OPCUA_Open62541_QualifiedName;
 
 /* types_generated.h */
 typedef UA_Variant *		OPCUA_Open62541_Variant;
@@ -752,6 +754,18 @@ UA_Server_run_iterate(server, waitInternal)
 OPCUA_Open62541_StatusCode
 UA_Server_run_shutdown(server)
 	OPCUA_Open62541_Server		server
+
+OPCUA_Open62541_StatusCode
+UA_Server_addVariableNode(server, requestedNewNodeId, parentNodeId, referenceTypeId, browseName, typeDefinition, attr, nodeContext, outNewNodeId)
+	OPCUA_Open62541_Server			server
+	OPCUA_Open62541_NodeId			requestedNewNodeId
+	OPCUA_Open62541_NodeId			parentNodeId
+	OPCUA_Open62541_NodeId			referenceTypeId
+	OPCUA_Open62541_QualifiedName		browseName
+	OPCUA_Open62541_NodeId			typeDefinition
+	OPCUA_Open62541_VariableAttributes	attr
+	void *					nodeContext
+	OPCUA_Open62541_NodeId			&outNewNodeId
 
 #############################################################################
 MODULE = OPCUA::Open62541	PACKAGE = OPCUA::Open62541::ServerConfig	PREFIX = UA_ServerConfig_
