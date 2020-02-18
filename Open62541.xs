@@ -30,15 +30,6 @@
 #endif
 
 /* types.h */
-typedef UA_Boolean		OPCUA_Open62541_Boolean;
-typedef UA_SByte		OPCUA_Open62541_SByte;
-typedef UA_Byte			OPCUA_Open62541_Byte;
-typedef UA_Int16		OPCUA_Open62541_Int16;
-typedef UA_UInt16		OPCUA_Open62541_UInt16;
-typedef UA_Int32		OPCUA_Open62541_Int32;
-typedef UA_UInt32		OPCUA_Open62541_UInt32;
-typedef UA_Int64		OPCUA_Open62541_Int64;
-typedef UA_UInt64		OPCUA_Open62541_UInt64;
 typedef UA_ByteString		OPCUA_Open62541_ByteString;
 typedef UA_StatusCode		OPCUA_Open62541_StatusCode;
 typedef UA_String		OPCUA_Open62541_String;
@@ -325,7 +316,7 @@ XS_PACKED_CHECK_UV(UInt64, UINT64)
 static int
 server_run_mgset(pTHX_ SV* sv, MAGIC* mg)
 {
-	volatile OPCUA_Open62541_Boolean	*running;
+	volatile UA_Boolean		*running;
 
 	DPRINTF("sv %p, mg %p, ptr %p", sv, mg, mg->mg_ptr);
 	running = (void *)mg->mg_ptr;
@@ -389,126 +380,126 @@ PROTOTYPES: DISABLE
 
 INCLUDE: Open62541-types.xsh
 
-OPCUA_Open62541_Boolean
+UA_Boolean
 TRUE()
     CODE:
 	RETVAL = UA_TRUE;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_Boolean
+UA_Boolean
 FALSE()
     CODE:
 	RETVAL = UA_FALSE;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_SByte
+UA_SByte
 SBYTE_MIN()
     CODE:
 	RETVAL = UA_SBYTE_MIN;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_SByte
+UA_SByte
 SBYTE_MAX()
     CODE:
 	RETVAL = UA_SBYTE_MAX;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_Byte
+UA_Byte
 BYTE_MIN()
     CODE:
 	RETVAL = UA_BYTE_MIN;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_Byte
+UA_Byte
 BYTE_MAX()
     CODE:
 	RETVAL = UA_BYTE_MAX;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_Int16
+UA_Int16
 INT16_MIN()
     CODE:
 	RETVAL = UA_INT16_MIN;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_Int16
+UA_Int16
 INT16_MAX()
     CODE:
 	RETVAL = UA_INT16_MAX;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_UInt16
+UA_UInt16
 UINT16_MIN()
     CODE:
 	RETVAL = UA_UINT16_MIN;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_UInt16
+UA_UInt16
 UINT16_MAX()
     CODE:
 	RETVAL = UA_UINT16_MAX;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_Int32
+UA_Int32
 INT32_MIN()
     CODE:
 	RETVAL = UA_INT32_MIN;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_Int32
+UA_Int32
 INT32_MAX()
     CODE:
 	RETVAL = UA_INT32_MAX;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_UInt32
+UA_UInt32
 UINT32_MIN()
     CODE:
 	RETVAL = UA_UINT32_MIN;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_UInt32
+UA_UInt32
 UINT32_MAX()
     CODE:
 	RETVAL = UA_UINT32_MAX;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_Int64
+UA_Int64
 INT64_MIN()
     CODE:
 	RETVAL = UA_INT64_MIN;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_Int64
+UA_Int64
 INT64_MAX()
     CODE:
 	RETVAL = UA_INT64_MAX;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_UInt64
+UA_UInt64
 UINT64_MIN()
     CODE:
 	RETVAL = UA_UINT64_MIN;
     OUTPUT:
 	RETVAL
 
-OPCUA_Open62541_UInt64
+UA_UInt64
 UINT64_MAX()
     CODE:
 	RETVAL = UA_UINT64_MAX;
@@ -622,20 +613,20 @@ UA_Variant_DESTROY(p)
 	DPRINTF("variant %p", p);
 	UA_Variant_delete(p);
 
-OPCUA_Open62541_Boolean
+UA_Boolean
 UA_Variant_isEmpty(v)
 	OPCUA_Open62541_Variant		v
 
-OPCUA_Open62541_Boolean
+UA_Boolean
 UA_Variant_isScalar(v)
 	OPCUA_Open62541_Variant		v
 
-OPCUA_Open62541_Boolean
+UA_Boolean
 UA_Variant_hasScalarType(v, type)
 	OPCUA_Open62541_Variant		v
 	OPCUA_Open62541_DataType	type
 
-OPCUA_Open62541_Boolean
+UA_Boolean
 UA_Variant_hasArrayType(v, type)
 	OPCUA_Open62541_Variant		v
 	OPCUA_Open62541_DataType	type
@@ -792,7 +783,7 @@ UA_Server_getConfig(server)
 OPCUA_Open62541_StatusCode
 UA_Server_run(server, running)
 	OPCUA_Open62541_Server		server
-	OPCUA_Open62541_Boolean		&running
+	UA_Boolean			&running
     INIT:
 	MAGIC *mg;
     CODE:
@@ -809,10 +800,10 @@ OPCUA_Open62541_StatusCode
 UA_Server_run_startup(server)
 	OPCUA_Open62541_Server		server
 
-OPCUA_Open62541_UInt16
+UA_UInt16
 UA_Server_run_iterate(server, waitInternal)
 	OPCUA_Open62541_Server		server
-	OPCUA_Open62541_Boolean		waitInternal
+	UA_Boolean			waitInternal
 
 OPCUA_Open62541_StatusCode
 UA_Server_run_shutdown(server)
@@ -853,7 +844,7 @@ UA_ServerConfig_setDefault(config)
 OPCUA_Open62541_StatusCode
 UA_ServerConfig_setMinimal(config, portNumber, certificate)
 	OPCUA_Open62541_ServerConfig	config
-	OPCUA_Open62541_UInt16		portNumber
+	UA_UInt16			portNumber
 	OPCUA_Open62541_ByteString	certificate;
     CODE:
 	DPRINTF("config %p, port %hu", config->svc_serverconfig, portNumber);
@@ -964,7 +955,7 @@ UA_Client_connect_async(client, endpointUrl, callback, data)
 OPCUA_Open62541_StatusCode
 UA_Client_run_iterate(client, timeout)
 	OPCUA_Open62541_Client		client
-	OPCUA_Open62541_UInt16		timeout
+	UA_UInt16			timeout
 
 OPCUA_Open62541_StatusCode
 UA_Client_disconnect(client)
