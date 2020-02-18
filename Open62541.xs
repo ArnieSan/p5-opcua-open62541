@@ -272,22 +272,54 @@ XS_pack_UA_Boolean(SV *out, UA_Boolean in)
 	sv_setsv(out, boolSV(in));
 }
 
-static UA_SByte
-XS_unpack_UA_SByte(SV *in)
-{
-	IV out = SvIV(in);
-	if (out < UA_SBYTE_MIN)
-		warn("Integer value %li less than UA_SBYTE_MIN", out);
-	if (out > UA_SBYTE_MAX)
-		warn("Integer value %li greater than UA_SBYTE_MAX", out);
-	return out;
+#define XS_PACKED_CHECK_IV(type, limit)					\
+static UA_##type							\
+XS_unpack_UA_##type(SV *in)						\
+{									\
+	IV out = SvIV(in);						\
+	if (out < UA_##limit##_MIN)					\
+		warn("Integer value %li less than UA_"			\
+		    #limit "_MIN", out);				\
+	if (out > UA_##limit##_MAX)					\
+		warn("Integer value %li greater than UA_"		\
+		    #limit "_MAX", out);				\
+	return out;							\
+}									\
+									\
+static void								\
+XS_pack_UA_##type(SV *out, UA_##type in)				\
+{									\
+	sv_setiv(out, in);						\
 }
 
-static void
-XS_pack_UA_SByte(SV *out, UA_Byte in)
-{
-	sv_setiv(out, in);
+#define XS_PACKED_CHECK_UV(type, limit)					\
+static UA_##type							\
+XS_unpack_UA_##type(SV *in)						\
+{									\
+	UV out = SvUV(in);						\
+	if (out > UA_##limit##_MAX)					\
+		warn("Unsigned value %li greater than UA_"		\
+		    #limit "_MAX", out);				\
+	return out;							\
+}									\
+									\
+static void								\
+XS_pack_UA_##type(SV *out, UA_##type in)				\
+{									\
+	sv_setuv(out, in);						\
 }
+
+XS_PACKED_CHECK_IV(SByte, SBYTE)
+XS_PACKED_CHECK_UV(Byte, BYTE)
+XS_PACKED_CHECK_IV(Int16, INT16)
+XS_PACKED_CHECK_UV(UInt16, UINT16)
+XS_PACKED_CHECK_IV(Int32, INT32)
+XS_PACKED_CHECK_UV(UInt32, UINT32)
+XS_PACKED_CHECK_IV(Int64, INT64)
+XS_PACKED_CHECK_UV(UInt64, UINT64)
+
+#undef XS_PACKED_CHECK_IV
+#undef XS_PACKED_CHECK_UV
 
 /* Magic callback for UA_Server_run() will change the C variable. */
 static int
