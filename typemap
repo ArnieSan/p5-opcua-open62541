@@ -93,7 +93,6 @@ T_UA_QUALIFIEDNAME
 		SV* const xsub_tmp_sv = $arg;
 		SV **value;
 		HV *hv;
-		UV index;
 
 		SvGETMAGIC(xsub_tmp_sv);
 		if (SvROK(xsub_tmp_sv) &&

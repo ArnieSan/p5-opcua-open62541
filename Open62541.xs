@@ -264,6 +264,9 @@ XS_pack_UA_Boolean(SV *out, UA_Boolean in)
 }
 
 #define XS_PACKED_CHECK_IV(type, limit)					\
+static UA_##type XS_unpack_UA_##type(SV *) __attribute__((unused));	\
+static void XS_pack_UA_##type(SV *, UA_##type) __attribute__((unused));	\
+									\
 static UA_##type							\
 XS_unpack_UA_##type(SV *in)						\
 {									\
@@ -284,6 +287,9 @@ XS_pack_UA_##type(SV *out, UA_##type in)				\
 }
 
 #define XS_PACKED_CHECK_UV(type, limit)					\
+static UA_##type XS_unpack_UA_##type(SV *) __attribute__((unused));	\
+static void XS_pack_UA_##type(SV *, UA_##type) __attribute__((unused));	\
+									\
 static UA_##type							\
 XS_unpack_UA_##type(SV *in)						\
 {									\
