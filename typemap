@@ -1,4 +1,6 @@
 TYPEMAP
+UA_Boolean				T_PACKED
+UA_SByte				T_PACKED
 OPCUA_Open62541_Boolean			T_BOOL
 OPCUA_Open62541_SByte			T_IV
 OPCUA_Open62541_Byte			T_UV

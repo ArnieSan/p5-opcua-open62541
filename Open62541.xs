@@ -258,6 +258,37 @@ typedef struct {
 } *				OPCUA_Open62541_ClientConfig;
 typedef UA_ClientState		OPCUA_Open62541_ClientState;
 
+/* Type conversions of scalar types do not use pointers. */
+
+static UA_Boolean
+XS_unpack_UA_Boolean(SV *in)
+{
+	return SvTRUE(in);
+}
+
+static void
+XS_pack_UA_Boolean(SV *out, UA_Boolean in)
+{
+	sv_setsv(out, boolSV(in));
+}
+
+static UA_SByte
+XS_unpack_UA_SByte(SV *in)
+{
+	IV out = SvIV(in);
+	if (out < UA_SBYTE_MIN)
+		warn("Integer value %li less than UA_SBYTE_MIN", out);
+	if (out > UA_SBYTE_MAX)
+		warn("Integer value %li greater than UA_SBYTE_MAX", out);
+	return out;
+}
+
+static void
+XS_pack_UA_SByte(SV *out, UA_Byte in)
+{
+	sv_setiv(out, in);
+}
+
 /* Magic callback for UA_Server_run() will change the C variable. */
 static int
 server_run_mgset(pTHX_ SV* sv, MAGIC* mg)
