@@ -12,13 +12,13 @@ jobs:
       - name: Install base packages
         run: |
           sudo apt-get install --yes \
-          gpg \
+          gnupg \
           make \
           net-tools \
           software-properties-common
       - name: Add OPC UA ppa
         run: sudo add-apt-repository ppa:open62541-team/ppa && sudo apt-get update
-      - name: Install Perl Modules for Testng and libopen62541
+      - name: Install Perl Modules for Testing and libopen62541
         run: |
           sudo apt-get install --yes \
           libdevel-checklib-perl \
