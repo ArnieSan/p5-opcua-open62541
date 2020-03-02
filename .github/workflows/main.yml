@@ -6,8 +6,6 @@ jobs:
   build:
     name: My Job
     runs-on: ubuntu-18.04
-    container:
-      image: ubuntu:18.04
     steps:
     - uses: actions/checkout@v2
     - name: apt update
