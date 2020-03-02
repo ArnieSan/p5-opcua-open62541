@@ -39,4 +39,4 @@ jobs:
       - name: Make
         run: cd p5-opcua-open62541 && make
       - name: Test
-        run: cd p5-opcua-open62541 && make test
+        run: cd p5-opcua-open62541 && timeout 30 prove -Iblib/lib -Iblib/arch t/*.t
