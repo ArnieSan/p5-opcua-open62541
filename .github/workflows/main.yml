@@ -16,3 +16,19 @@ jobs:
           make \
           net-tools \
           software-properties-common
+      - name: Add OPC UA ppa
+        run: sudo add-apt-repository ppa:open62541-team/ppa && sudo apt-get update
+      - name: Install Perl Modules for Testng and libopen62541
+        run: |
+          sudo apt-get install --yes \
+          libdevel-checklib-perl \
+          libopen62541-1 \
+          libopen62541-1-dev \
+          libopen62541-1-tools \
+          libtest-exception-perl \
+          libtest-leaktrace-perl \
+          libtest-nowarnings-perl \
+          libtest-pod-perl \
+          libtest-requires-perl \
+          libtest-tcp-perl \
+          libtest-warn-perl
