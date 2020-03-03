@@ -35,7 +35,7 @@ jobs:
       - name: Checkout
         run: git clone https://github.com/ArnieSan/p5-opcua-open62541.git 
       - name: perl Makefile
-        run: cd p5-opcua-open62541 && perl Makefile.PL
+        run: cd p5-opcua-open62541 && git checkout docker-ci && perl Makefile.PL
       - name: Make
         run: cd p5-opcua-open62541 && make
       - name: Test
