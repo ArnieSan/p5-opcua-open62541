@@ -40,5 +40,22 @@ jobs:
         run: cd p5-opcua-open62541 && make
       - name: Pretest
         run: cd p5-opcua-open62541 && timeout 30 perl -Iblib/lib -Iblib/arch t/OPCUA-Open62541.t
-      - name: Test
-        run: cd p5-opcua-open62541 && timeout 30 prove -v -Iblib/lib -Iblib/arch t/*.t
+      - name: Test1
+        run: |
+          cd p5-opcua-open62541 && for i in \
+          t/client-config.t \
+          t/client-connect.t \
+          t/client.t \
+          t/server-iterate.t \
+          t/server-running.t \
+          t/server-variable.t \
+          t/server.t \
+          t/test-client.t \
+          t/test-server.t \
+          ; do timeout 30 perl -Iblib/lib -Iblib/arch $i; done
+      - name: Test2
+        run: |
+          cd p5-opcua-open62541 && for i in \
+          t/client-connect-async.t \
+          t/client-browse-async.t \
+          ; do timeout 30 perl -Iblib/lib -Iblib/arch $i; done
