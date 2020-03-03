@@ -4,11 +4,11 @@ on: [push, pull_request]
 
 jobs:
   build:
+    env:
+      GITHUB_WORKSPACE: /home/runner/
     name: My Job
     runs-on: ubuntu-18.04
     steps:
-      env:
-        GITHUB_WORKSPACE: /home/runner/
     - uses: actions/checkout@v2
     - name: Whereami
       run: pwd && echo XXX1 && ls -lad /home && echo XXX2 && ls -lad && echo XXX3 && ls -laR /github && echo XXX4 && ls -lad /home/runner
