@@ -4,7 +4,7 @@ use OPCUA::Open62541 ':all';
 use POSIX qw(sigaction SIGALRM);
 
 use OPCUA::Open62541::Test::Server;
-use Test::More tests => OPCUA::Open62541::Test::Server::planning() + 31;
+use Test::More tests => OPCUA::Open62541::Test::Server::planning() + 30;
 use Test::NoWarnings;
 use Test::LeakTrace;
 use Time::HiRes 'usleep';
@@ -13,7 +13,8 @@ my $server = OPCUA::Open62541::Test::Server->new();
 $server->start();
 my $port = $server->port();
 # Server needs a little time for startup
-usleep(500);
+print "sleep 100ms\n";
+usleep(100_000);
 
 my @testdesc = (
     ['client', 'client creation'],
@@ -47,7 +48,7 @@ my @testdesc = (
 );
 my %testok = map { $_ => 0 } map { $_->[0] } @testdesc;
 
-no_leaks_ok {
+{
     my $c;
     my $r;
     my $data = ['foo'];
@@ -70,7 +71,10 @@ no_leaks_ok {
 	while($c->getState != CLIENTSTATE_SESSION && $maxloop-- > 0) {
 	    $r = $c->run_iterate(0);
 	    $failed_iterate = 1 if $r != STATUSCODE_GOOD;
-	    usleep(100);
+	    if ($maxloop % 10 == 1) {
+		print "sleep 10ms\n";
+		usleep(10_000);
+	    }
 	}
 	$testok{iterate} = 1 if not $failed_iterate and $maxloop > 0;
 
@@ -111,6 +115,10 @@ no_leaks_ok {
 	while(not $browsed && $maxloop-- > 0) {
 	    $r = $c->run_iterate(0);
 	    $failed_iterate = 1 if $r != STATUSCODE_GOOD;
+	    if ($maxloop % 10 == 1) {
+		print "sleep 10ms\n";
+		usleep(10_000);
+	    }
 	}
 	$testok{iterate2} = 1 if not $failed_iterate and $maxloop > 0;
 
@@ -168,6 +176,10 @@ no_leaks_ok {
 	while(not $browsed && $maxloop-- > 0) {
 	    $r = $c->run_iterate(0);
 	    $failed_iterate = 1 if $r != STATUSCODE_GOOD;
+	    if ($maxloop % 10 == 1) {
+		print "sleep 10ms\n";
+		usleep(10_000);
+	    }
 	}
 	$testok{iterate3} = 1 if not $failed_iterate and $maxloop > 0;
 
@@ -189,7 +201,7 @@ no_leaks_ok {
 	$testok{state_disconnected} = 1
 	    if $c->getState == CLIENTSTATE_DISCONNECTED;
     }
-} "leak browse_service callback/data";
+}
 
 ok(delete($testok{$_->[0]}), $_->[1]) for (@testdesc);
 
