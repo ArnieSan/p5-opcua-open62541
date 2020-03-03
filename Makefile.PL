@@ -1,4 +1,4 @@
-use 5.026001;
+use 5.022001;
 use ExtUtils::MakeMaker;
 
 use Devel::CheckLib;
