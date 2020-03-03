@@ -8,10 +8,13 @@ use OPCUA::Open62541::Test::Server;
 use Test::More tests => 31;
 use Test::NoWarnings;
 use Test::LeakTrace;
+use Time::HiRes 'usleep';
 
 my $server = OPCUA::Open62541::Test::Server->new();
 $server->start();
 my $port = $server->port();
+# Server needs a little time for startup
+usleep(500);
 
 my @testdesc = (
     ['client', 'client creation'],
@@ -56,11 +59,12 @@ no_leaks_ok {
 	);
 	$testok{connect_async} = 1 if $r == STATUSCODE_GOOD;
 
-	my $maxloop = 1000;
+	my $maxloop = 100;
 	my $failed_iterate = 0;
 	while($c->getState != CLIENTSTATE_SESSION && $maxloop-- > 0) {
 	    $r = $c->run_iterate(0);
 	    $failed_iterate = 1 if $r != STATUSCODE_GOOD;
+	    usleep(100);
 	}
 	$testok{iterate} = 1 if not $failed_iterate and $maxloop > 0;
 
