@@ -8,45 +8,58 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
-    - name: Whereami
+    - name: apt update
+      run: sudo apt-get update
+    - name: Install base packages
       run: |
-        pwd
-        echo XXX1
-        ls -la /home
-        echo XXX2
-        ls -lad
-        echo XXX3
-        ls -laR /github
-        echo XXX4
-        ls -lad /home/runner
-      #    - name: apt update
-      #      run: sudo apt-get update
-      #    - name: Install base packages
-      #      run: |
-      #        sudo apt-get install --yes \
-      #        gpg \
-      #        make \
-      #        net-tools \
-      #        software-properties-common
-      #    - name: Add OPC UA ppa
-      #      run: sudo add-apt-repository ppa:open62541-team/ppa && sudo apt-get update
-      #    - name: Install Perl Modules for Testng and libopen62541
-      #      run: |
-      #        sudo apt-get install --yes \
-      #        libdevel-checklib-perl \
-      #        libopen62541-1 \
-      #        libopen62541-1-dev \
-      #        libopen62541-1-tools \
-      #        libtest-exception-perl \
-      #        libtest-leaktrace-perl \
-      #        libtest-nowarnings-perl \
-      #        libtest-pod-perl \
-      #        libtest-requires-perl \
-      #        libtest-tcp-perl \
-      #        libtest-warn-perl
-      #    - name: perl Makefile
-      #      run: perl Makefile.PL
-      #    - name: Make
-      #      run: make
-      #    - name: Test
-      #      run: timeout 60 make test
+        sudo apt-get install --yes \
+        gpg \
+        make \
+        net-tools \
+        software-properties-common
+    - name: Add OPC UA ppa
+      run: |
+        sudo add-apt-repository ppa:open62541-team/ppa
+        sudo apt-get update
+    - name: Install Perl Modules for Testng and libopen62541
+      run: |
+        sudo apt-get install --yes \
+        libdevel-checklib-perl \
+        libopen62541-1 \
+        libopen62541-1-dev \
+        libopen62541-1-tools \
+        libtest-exception-perl \
+        libtest-leaktrace-perl \
+        libtest-nowarnings-perl \
+        libtest-pod-perl \
+        libtest-requires-perl \
+        libtest-tcp-perl \
+        libtest-warn-perl
+    - name: perl Makefile
+      run: perl Makefile.PL
+    - name: Make
+      run: make
+      #- name: Test
+      #  run: timeout 60 make test
+    - name: Pretest
+      run: timeout 30 perl -Iblib/lib -Iblib/arch t/OPCUA-Open62541.t
+    - name: Test1
+      run: |
+        for i in \
+        t/client-config.t \
+        t/client-connect.t \
+        t/client.t \
+        t/server-iterate.t \
+        t/server-running.t \
+        t/server-variable.t \
+        t/server.t \
+        t/test-client.t \
+        t/test-server.t \
+        ; do timeout 30 perl -Iblib/lib -Iblib/arch $i; done
+    - name: Test2
+      run: |
+        for i in \
+        t/client-connect-async.t \
+        t/client-browse-async.t \
+        ; do timeout 30 perl -Iblib/lib -Iblib/arch $i; done
+
