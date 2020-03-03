@@ -5,57 +5,39 @@ on: [push, pull_request]
 jobs:
   build:
     name: My Job
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
+    container:
+      image: ubuntu:18.04
     steps:
-      - name: apt update
-        run: sudo apt-get update
-      - name: Install base packages
-        run: |
-          sudo apt-get install --yes \
-          gnupg \
-          make \
-          net-tools \
-          software-properties-common
-      - name: Add OPC UA ppa
-        run: sudo add-apt-repository ppa:open62541-team/ppa && sudo apt-get update
-      - name: Install Perl Modules for Testing and libopen62541
-        run: |
-          sudo apt-get install --yes \
-          libdevel-checklib-perl \
-          libopen62541-1 \
-          libopen62541-1-dev \
-          libopen62541-1-tools \
-          libtest-exception-perl \
-          libtest-leaktrace-perl \
-          libtest-nowarnings-perl \
-          libtest-pod-perl \
-          libtest-requires-perl \
-          libtest-tcp-perl \
-          libtest-warn-perl
-      - name: Checkout
-        run: git clone https://github.com/ArnieSan/p5-opcua-open62541.git 
-      - name: perl Makefile
-        run: cd p5-opcua-open62541 && git checkout docker-ci && perl Makefile.PL
-      - name: Make
-        run: cd p5-opcua-open62541 && make
-      - name: Pretest
-        run: cd p5-opcua-open62541 && timeout 30 perl -Iblib/lib -Iblib/arch t/OPCUA-Open62541.t
-      - name: Test1
-        run: |
-          cd p5-opcua-open62541 && for i in \
-          t/client-config.t \
-          t/client-connect.t \
-          t/client.t \
-          t/server-iterate.t \
-          t/server-running.t \
-          t/server-variable.t \
-          t/server.t \
-          t/test-client.t \
-          t/test-server.t \
-          ; do timeout 30 perl -Iblib/lib -Iblib/arch $i; done
-      - name: Test2
-        run: |
-          cd p5-opcua-open62541 && for i in \
-          t/client-connect-async.t \
-          t/client-browse-async.t \
-          ; do timeout 30 perl -Iblib/lib -Iblib/arch $i; done
+    - uses: actions/checkout@v2
+    - name: apt update
+      run: apt-get update
+    - name: Install base packages
+      run: |
+        apt-get install --yes \
+        gpg \
+        make \
+        net-tools \
+        software-properties-common
+    - name: Add OPC UA ppa
+      run: add-apt-repository ppa:open62541-team/ppa && apt-get update
+    - name: Install Perl Modules for Testng and libopen62541
+      run: |
+        apt-get install --yes \
+        libdevel-checklib-perl \
+        libopen62541-1 \
+        libopen62541-1-dev \
+        libopen62541-1-tools \
+        libtest-exception-perl \
+        libtest-leaktrace-perl \
+        libtest-nowarnings-perl \
+        libtest-pod-perl \
+        libtest-requires-perl \
+        libtest-tcp-perl \
+        libtest-warn-perl
+    - name: perl Makefile
+      run: perl Makefile.PL
+    - name: Make
+      run: make
+    - name: Test
+      run: timeout 60 make test
