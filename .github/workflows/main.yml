@@ -6,38 +6,40 @@ jobs:
   build:
     name: My Job
     runs-on: ubuntu-18.04
-    container:
-      image: ubuntu:18.04
     steps:
+      env:
+        GITHUB_WORKSPACE: /home/runner/
     - uses: actions/checkout@v2
-    - name: apt update
-      run: apt-get update
-    - name: Install base packages
-      run: |
-        apt-get install --yes \
-        gpg \
-        make \
-        net-tools \
-        software-properties-common
-    - name: Add OPC UA ppa
-      run: add-apt-repository ppa:open62541-team/ppa && apt-get update
-    - name: Install Perl Modules for Testng and libopen62541
-      run: |
-        apt-get install --yes \
-        libdevel-checklib-perl \
-        libopen62541-1 \
-        libopen62541-1-dev \
-        libopen62541-1-tools \
-        libtest-exception-perl \
-        libtest-leaktrace-perl \
-        libtest-nowarnings-perl \
-        libtest-pod-perl \
-        libtest-requires-perl \
-        libtest-tcp-perl \
-        libtest-warn-perl
-    - name: perl Makefile
-      run: perl Makefile.PL
-    - name: Make
-      run: make
-    - name: Test
-      run: timeout 60 make test
+    - name: Whereami
+      run: pwd && echo XXX1 && ls -lad /home && echo XXX2 && ls -lad && echo XXX3 && ls -laR /github && echo XXX4 && ls -lad /home/runner
+      #    - name: apt update
+      #      run: sudo apt-get update
+      #    - name: Install base packages
+      #      run: |
+      #        sudo apt-get install --yes \
+      #        gpg \
+      #        make \
+      #        net-tools \
+      #        software-properties-common
+      #    - name: Add OPC UA ppa
+      #      run: sudo add-apt-repository ppa:open62541-team/ppa && sudo apt-get update
+      #    - name: Install Perl Modules for Testng and libopen62541
+      #      run: |
+      #        sudo apt-get install --yes \
+      #        libdevel-checklib-perl \
+      #        libopen62541-1 \
+      #        libopen62541-1-dev \
+      #        libopen62541-1-tools \
+      #        libtest-exception-perl \
+      #        libtest-leaktrace-perl \
+      #        libtest-nowarnings-perl \
+      #        libtest-pod-perl \
+      #        libtest-requires-perl \
+      #        libtest-tcp-perl \
+      #        libtest-warn-perl
+      #    - name: perl Makefile
+      #      run: perl Makefile.PL
+      #    - name: Make
+      #      run: make
+      #    - name: Test
+      #      run: timeout 60 make test
