@@ -38,5 +38,7 @@ jobs:
         run: cd p5-opcua-open62541 && git checkout docker-ci && perl Makefile.PL
       - name: Make
         run: cd p5-opcua-open62541 && make
+      - name: Pretest
+        run: cd p5-opcua-open62541 && timeout 30 perl -Iblib/lib -Iblib/arch t/OPCUA-Open62541.t
       - name: Test
-        run: cd p5-opcua-open62541 && timeout 30 prove -Iblib/lib -Iblib/arch t/*.t
+        run: cd p5-opcua-open62541 && timeout 30 prove -v -Iblib/lib -Iblib/arch t/*.t
